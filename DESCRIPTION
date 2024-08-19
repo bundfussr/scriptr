@@ -1,0 +1,17 @@
+Package: scriptr
+Title: Framework for storing code chunks and generating R scripts from them
+Version: 0.0.0.9000
+Authors@R: 
+    person("Stefan", "Bundfuss", , "stefan.bundfuss@roche.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0009-0005-0027-1198"))
+Description: The package provides a framework for storing code chunks and generating R scripts from them.
+License: Apache License (>= 2)
+URL: https://bundfussr.github.io/scriptr/,
+    https://github.com/bundfussr/scriptr
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.1
+Imports:
+    rlang,
+    stringr,
+    styler

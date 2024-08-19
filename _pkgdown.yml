@@ -1,0 +1,14 @@
+url: https://bundfussr.github.io/scriptr/
+
+template:
+  bootstrap: 5
+  params:
+   bootswatch: flatly
+search:
+  exclude: ['news/index.html']
+repo:
+  url:
+    home: https://github.com/bundfussr/scriptr
+    source: https://github.com/bundfussr/scriptr/blob/main/
+    issue: https://github.com/bundfussr/scriptr/issues/
+    user: https://github.com/

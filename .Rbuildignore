@@ -1,0 +1,6 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^_pkgdown.yaml$
+^inst/WORDLIST$
+^docs$
+^pkgdown$
