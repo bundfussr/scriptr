@@ -14,11 +14,28 @@ add_call(
   call = derive_var_trtdurd()
 )
 
-add_call_template("inc_var", mutate(VAR = VAR + !!step), defaults = list(step = 1))
+add_call_template(
+  "inc_var",
+  mutate(VAR = VAR + !!step, glue_sym("{domain}STRESC") := glue_char("Found in {domain}")),
+  defaults = list(step = 1, domain = "VS")
+)
+
+add_chunk("paths", expr({
+  "# Set up paths"
+  config <- yaml::read_yaml("config_workflow.yml")
+
+  sdtm_path <- if_else(
+    config[["study_config"]][["datacut"]][["enable"]],
+    config[["study_config"]][["datacut"]][["directory"]],
+    config[["paths"]][["sdtmv"]][["data"]]
+  )
+}))
 
 set_scriptr_sources("scriptr")
 
 execute({
+  insert_chunks(exprs(paths))
+
   library(syntheticsdtm)
   # Read in data
   data(dm)
@@ -37,5 +54,7 @@ execute({
     new_vars = exprs(TRTEDTM, convert_dtc_to_dtm(EXENDTC))
   )
 
-  insert_calls(dm, ids = exprs(trtsdtm, trtdurd, inc_var(3)))
+  insert_calls(dm, ids = exprs(trtsdtm, trtdurd, inc_var(step = 3), chg))
+
+
 }, file = file("./test_out.R", "w"))

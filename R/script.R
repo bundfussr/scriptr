@@ -22,7 +22,9 @@ execute <- function(code, file) {
       write(code[[i]], file)
     } else if (str_starts(paste(expr_deparse(code[[i]]), collapse = " ")
                           , "insert_calls\\(")) {
-      print("insert found")
+      write(style_text(eval(code[[i]])), file)
+    } else if (str_starts(paste(expr_deparse(code[[i]]), collapse = " ")
+                          , "insert_chunks\\(")) {
       write(style_text(eval(code[[i]])), file)
     } else {
       write(style_text(expr_deparse(code[[i]])), file)

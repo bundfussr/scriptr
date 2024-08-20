@@ -1,8 +1,10 @@
 #' @importFrom cli cli_abort
 #' @importFrom dplyr filter group_by mutate pull row_number
+#' @importFrom glue glue
 #' @importFrom magrittr %>%
 #' @importFrom purrr discard map_chr
-#' @importFrom rlang call_args call_name enexpr expr_deparse
+#' @importFrom rlang as_name call_args call_name enexpr enquo0 expr_deparse
+#'   global_env new_environment parse_expr quo_get_expr sym
 #' @importFrom stringr str_starts
 #' @importFrom styler style_text
 #' @keywords internal

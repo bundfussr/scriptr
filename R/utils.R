@@ -1,6 +1,6 @@
 init_scriptr_env <- function(env) {
   if (is.null(env$scriptr_env)) {
-    env$scriptr_env <- rlang::new_environment(list(calls = list()))
+    env$scriptr_env <- rlang::new_environment(list(calls = list(), chunks = list()))
   }
 }
 
@@ -32,7 +32,7 @@ replace_bangbang <- function(expr, values) {
 replace_glue_char <- function(expr, values) {
   for (i in seq_along(expr)) {
     if (length(expr[[i]]) ==2 && expr[[i]][[1]] == sym("glue_char")) {
-      expr[[i]] <- glue(expr[[i]][[2]], .envir = new_environment(data = values))
+      expr[[i]] <- as.character(glue(expr[[i]][[2]], .envir = new_environment(data = values)))
     }
     else if (typeof(expr[[i]]) == "language") {
       expr[[i]] <-  replace_glue_char(expr[[i]], values = values)
@@ -48,10 +48,18 @@ replace_glue_sym <- function(expr, values) {
       expr[[i]] <- sym(glue(expr[[i]][[2]], .envir = new_environment(data = values)))
     }
     else if (typeof(expr[[i]]) == "language") {
-      expr[[i]] <-  replace_glue_char(expr[[i]], values = values)
+      expr[[i]] <-  replace_glue_sym(expr[[i]], values = values)
     }
   }
   expr
+}
+
+#' @export
+use_template <- function(expr, values) {
+  expr %>%
+    replace_bangbang(values = values) %>%
+    replace_glue_sym(values = values) %>%
+    replace_glue_char(values = values)
 }
 
 #' @export

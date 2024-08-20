@@ -81,7 +81,7 @@ get_call_code <- function(id, args = NULL) {
     paste(expr_deparse(call), collapse = " ")
   }
   else if (inherits(call, "call_template")) {
-    expr <- replace_bangbang(
+    expr <- use_template(
       quo_get_expr(call$call),
       values = consolidate_lists(call$defaults, args)
     )
@@ -115,3 +115,10 @@ get_source_env <- function(source) {
   eval(parse_expr(paste0(source, ":::scriptr_env")))
 }
 
+#' @export
+use_template <- function(expr, values) {
+  expr %>%
+    replace_bangbang(values = values) %>%
+    replace_glue_sym(values = values) %>%
+    replace_glue_char(values = values)
+}
