@@ -3,9 +3,9 @@
 #' @importFrom glue glue
 #' @importFrom magrittr %>%
 #' @importFrom purrr discard map_chr
-#' @importFrom rlang as_name call_args call_name enexpr enquo0 expr_deparse
-#'   global_env new_environment parse_expr quo_get_expr sym
-#' @importFrom stringr str_starts
+#' @importFrom rlang as_name call_args call_name current_env enexpr enquo0
+#'   expr_deparse global_env new_environment parse_expr quo_get_expr sym
+#' @importFrom stringr str_remove_all str_starts
 #' @importFrom styler style_text
 #' @keywords internal
 "_PACKAGE"

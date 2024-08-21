@@ -32,7 +32,11 @@ replace_bangbang <- function(expr, values) {
 replace_glue_char <- function(expr, values) {
   for (i in seq_along(expr)) {
     if (length(expr[[i]]) ==2 && expr[[i]][[1]] == sym("glue_char")) {
-      expr[[i]] <- as.character(glue(expr[[i]][[2]], .envir = new_environment(data = values)))
+      expr[[i]] <- as.character(
+        glue(
+          expr[[i]][[2]],
+          .envir = new_environment(data =values, parent = current_env())
+        ))
     }
     else if (typeof(expr[[i]]) == "language") {
       expr[[i]] <-  replace_glue_char(expr[[i]], values = values)
@@ -45,7 +49,10 @@ replace_glue_char <- function(expr, values) {
 replace_glue_sym <- function(expr, values) {
   for (i in seq_along(expr)) {
     if (length(expr[[i]]) ==2 && expr[[i]][[1]] == sym("glue_sym")) {
-      expr[[i]] <- sym(glue(expr[[i]][[2]], .envir = new_environment(data = values)))
+      expr[[i]] <- sym(glue(
+        expr[[i]][[2]],
+        .envir = new_environment(data = values, parent = current_env())
+      ))
     }
     else if (typeof(expr[[i]]) == "language") {
       expr[[i]] <-  replace_glue_sym(expr[[i]], values = values)

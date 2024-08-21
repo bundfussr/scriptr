@@ -18,6 +18,7 @@ add_call <- function(id, call, env = rlang::caller_env()) {
 #' @param id Identifier
 #' @param call Call
 #' @param defaults List of default values
+#' @param env Environment where to store the call template
 #'
 #' @export
 add_call_template <- function(id, call, defaults = NULL, env = rlang::caller_env()) {

@@ -12,6 +12,8 @@ add_call_template(id, call, defaults = NULL, env = rlang::caller_env())
 \item{call}{Call}
 
 \item{defaults}{List of default values}
+
+\item{env}{Environment where to store the call template}
 }
 \description{
 Adds a Call Template

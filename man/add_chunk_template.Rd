@@ -12,6 +12,8 @@ add_chunk_template(id, chunk, defaults = NULL, env = rlang::caller_env())
 \item{chunk}{Chunk}
 
 \item{defaults}{List of default values}
+
+\item{env}{Environment where to store the chunk template}
 }
 \description{
 Adds a Chunk Template

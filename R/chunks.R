@@ -1,14 +1,14 @@
 #' Adds a Chunk
 #'
 #' @param id Identifier
-#' @param chunk Chunk
+#' @param new_chunk Chunk
 #' @param env Environment where to store the chunk
 #'
 #' @export
 #'
-add_chunk <- function(id, chunk, env = rlang::caller_env()) {
+add_chunk <- function(id, new_chunk, env = rlang::caller_env()) {
   init_scriptr_env(env)
-  env$scriptr_env$chunks[[id]] <- chunk(enexpr(chunk))
+  env$scriptr_env$chunks[[id]] <- chunk(enexpr(new_chunk))
 }
 
 #' Adds a Chunk Template
@@ -16,20 +16,17 @@ add_chunk <- function(id, chunk, env = rlang::caller_env()) {
 #' @param id Identifier
 #' @param chunk Chunk
 #' @param defaults List of default values
+#' @param env Environment where to store the chunk template
 #'
 #' @export
 add_chunk_template <- function(id, chunk, defaults = NULL, env = rlang::caller_env()) {
   init_scriptr_env(env)
 
-  env$scriptr_env$chunks[[id]] <- chunk_template(enquo0(chunk), defaults)
+  env$scriptr_env$chunks[[id]] <- chunk_template(quo_get_expr(enquo0(chunk)), defaults)
 }
 
 chunk <- function(chunk) {
-  if (chunk[[1]] == sym("{")) {
-    out <- chunk[-1]
-  } else {
-    out <- chunk
-  }
+  out <- chunk
 
   class(out) <- c("chunk", class(chunk))
   out
@@ -81,18 +78,19 @@ get_chunk_code <- function(id, args = NULL) {
   id_char <- as_name(id)
   chunk <- get_chunk(id_char)
   if (inherits(chunk, "chunk")) {
-    paste(chunk_deparse(chunk), collapse = "\n")
+    code <- paste(chunk_deparse(chunk), collapse = "\n")
   }
   else if (inherits(chunk, "chunk_template")) {
     expr <- use_template(
-      quo_get_expr(chunk$chunk),
+      chunk$chunk,
       values = consolidate_lists(chunk$defaults, args)
     )
-    paste(expr_deparse(expr), collapse = " ")
+    code <- paste(expr_deparse(expr), collapse = "\n")
   }
   else {
     cli_abort("{.val {id_char}} has unsupported class {.val {class(chunk)}}")
   }
+  str_remove_all(code, "(^`?\\{`?\\n|\\n\\}$)")
 }
 
 #' @export

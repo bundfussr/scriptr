@@ -4,12 +4,12 @@
 \alias{add_chunk}
 \title{Adds a Chunk}
 \usage{
-add_chunk(id, chunk, env = rlang::caller_env())
+add_chunk(id, new_chunk, env = rlang::caller_env())
 }
 \arguments{
 \item{id}{Identifier}
 
-\item{chunk}{Chunk}
+\item{new_chunk}{Chunk}
 
 \item{env}{Environment where to store the chunk}
 }
