@@ -35,7 +35,7 @@ add_chunk_template(
   "apply_metadata",
   {
   metacore <- admiralroche::read_dap_m3(dataset = glue_char("{str_to_upper(dataset)}"))
-
+  ""
   "# Check DAP M3"
   check_dap_m3(dataset = glue_char("{str_to_upper(dataset)}"))
 

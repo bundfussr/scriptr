@@ -11,6 +11,16 @@ add_call <- function(id, call, env = rlang::caller_env()) {
   env$scriptr_env$calls[[id]] <- enexpr(call)
 }
 
+call <- function(call, description) {
+  out <- list(
+    call = call,
+    description = description
+  )
+
+  class(out) <- c("call", class(call))
+  out
+}
+
 # add_call(id = "chg", call = derive_var_chg())
 
 #' Adds a Call Template
@@ -21,15 +31,24 @@ add_call <- function(id, call, env = rlang::caller_env()) {
 #' @param env Environment where to store the call template
 #'
 #' @export
-add_call_template <- function(id, call, defaults = NULL, env = rlang::caller_env()) {
+add_call_template <- function(id,
+                              call,
+                              description = NULL,
+                              defaults = NULL,
+                              env = rlang::caller_env()) {
   init_scriptr_env(env)
 
-  env$scriptr_env$calls[[id]] <- call_template(enquo0(call), defaults)
+  env$scriptr_env$calls[[id]] <- call_template(
+    enquo0(call),
+    description = description,
+    defaults = defaults
+  )
 }
 
-call_template <- function(call, defaults) {
+call_template <- function(call, description = NULL, defaults) {
   out <- list(
     call = call,
+    description = description,
     defaults = defaults
   )
 

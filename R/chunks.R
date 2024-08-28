@@ -6,9 +6,9 @@
 #'
 #' @export
 #'
-add_chunk <- function(id, new_chunk, env = rlang::caller_env()) {
+add_chunk <- function(id, new_chunk, description = NULL, env = rlang::caller_env()) {
   init_scriptr_env(env)
-  env$scriptr_env$chunks[[id]] <- chunk(enexpr(new_chunk))
+  env$scriptr_env$chunks[[id]] <- chunk(enexpr(new_chunk), description = description)
 }
 
 #' Adds a Chunk Template
@@ -19,22 +19,33 @@ add_chunk <- function(id, new_chunk, env = rlang::caller_env()) {
 #' @param env Environment where to store the chunk template
 #'
 #' @export
-add_chunk_template <- function(id, chunk, defaults = NULL, env = rlang::caller_env()) {
+add_chunk_template <- function(id,
+                               chunk,
+                               description = NULL,
+                               defaults = NULL,
+                               env = rlang::caller_env()) {
   init_scriptr_env(env)
 
-  env$scriptr_env$chunks[[id]] <- chunk_template(quo_get_expr(enquo0(chunk)), defaults)
+  env$scriptr_env$chunks[[id]] <- chunk_template(
+    quo_get_expr(enquo0(chunk)),
+    description = description,
+    defaults = defaults)
 }
 
-chunk <- function(chunk) {
-  out <- chunk
+chunk <- function(chunk, description) {
+  out <- list(
+    chunk = chunk,
+    description = description
+  )
 
   class(out) <- c("chunk", class(chunk))
   out
 }
 
-chunk_template <- function(chunk, defaults) {
+chunk_template <- function(chunk, description, defaults) {
   out <- list(
     chunk = chunk,
+    description = description,
     defaults = defaults
   )
 
@@ -78,14 +89,14 @@ get_chunk_code <- function(id, args = NULL) {
   id_char <- as_name(id)
   chunk <- get_chunk(id_char)
   if (inherits(chunk, "chunk")) {
-    code <- paste(chunk_deparse(chunk), collapse = "\n")
+    code <- paste(chunk_deparse(chunk$chunk), collapse = "\n")
   }
   else if (inherits(chunk, "chunk_template")) {
     expr <- use_template(
       chunk$chunk,
       values = consolidate_lists(chunk$defaults, args)
     )
-    code <- paste(expr_deparse(expr), collapse = "\n")
+    code <- paste(chunk_deparse(expr), collapse = "\n")
   }
   else {
     cli_abort("{.val {id_char}} has unsupported class {.val {class(chunk)}}")
@@ -96,7 +107,7 @@ get_chunk_code <- function(id, args = NULL) {
 #' @export
 chunk_deparse <- function(chunk) {
   map_chr(as.vector(unclass(chunk)), function(x) {
-    if (typeof(x) == "character" && str_starts(x, "#")) {
+    if (typeof(x) == "character" && (str_starts(x, "#") || x == "")) {
       x
     } else if (length(x) > 1) {
       paste(expr_deparse(x), collapse = " ")
