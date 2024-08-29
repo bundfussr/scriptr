@@ -130,3 +130,6 @@ set_line_break_after_arg_style <- function() {
   )
 }
 
+format_description <- function(description) {
+  paste('#', description, collapse = "\n")
+}

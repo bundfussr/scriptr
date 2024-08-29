@@ -4,12 +4,15 @@
 \alias{add_call}
 \title{Adds a Call}
 \usage{
-add_call(id, call, env = rlang::caller_env())
+add_call(id, new_call, description = NULL, env = rlang::caller_env())
 }
 \arguments{
 \item{id}{Identifier}
 
-\item{call}{Call}
+\item{new_call}{Call}
+
+\item{description}{Description
+The description is added as comment before the call.}
 
 \item{env}{Environment where to store the call}
 }

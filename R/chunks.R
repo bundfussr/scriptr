@@ -2,6 +2,8 @@
 #'
 #' @param id Identifier
 #' @param new_chunk Chunk
+#' @param description Description
+#'   The description is added as comment before the chunk.
 #' @param env Environment where to store the chunk
 #'
 #' @export
@@ -15,6 +17,8 @@ add_chunk <- function(id, new_chunk, description = NULL, env = rlang::caller_env
 #'
 #' @param id Identifier
 #' @param chunk Chunk
+#' @param description Description
+#'   The description is added as comment before the chunk.
 #' @param defaults List of default values
 #' @param env Environment where to store the chunk template
 #'
@@ -101,7 +105,12 @@ get_chunk_code <- function(id, args = NULL) {
   else {
     cli_abort("{.val {id_char}} has unsupported class {.val {class(chunk)}}")
   }
-  str_remove_all(code, "(^`?\\{`?\\n|\\n\\}$)")
+  code <- str_remove_all(code, "(^`?\\{`?\\n|\\n\\}$)")
+  if (!is.null(chunk$description)) {
+    paste(format_description(chunk$description), code, sep = "\n")
+  } else {
+    code
+  }
 }
 
 #' @export

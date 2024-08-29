@@ -4,12 +4,15 @@
 \alias{add_chunk}
 \title{Adds a Chunk}
 \usage{
-add_chunk(id, new_chunk, env = rlang::caller_env())
+add_chunk(id, new_chunk, description = NULL, env = rlang::caller_env())
 }
 \arguments{
 \item{id}{Identifier}
 
 \item{new_chunk}{Chunk}
+
+\item{description}{Description
+The description is added as comment before the chunk.}
 
 \item{env}{Environment where to store the chunk}
 }

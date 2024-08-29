@@ -4,12 +4,21 @@
 \alias{add_call_template}
 \title{Adds a Call Template}
 \usage{
-add_call_template(id, call, defaults = NULL, env = rlang::caller_env())
+add_call_template(
+  id,
+  call,
+  description = NULL,
+  defaults = NULL,
+  env = rlang::caller_env()
+)
 }
 \arguments{
 \item{id}{Identifier}
 
 \item{call}{Call}
+
+\item{description}{Description
+The description is added as comment before the call.}
 
 \item{defaults}{List of default values}
 

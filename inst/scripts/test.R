@@ -1,6 +1,7 @@
 add_call(
   id = "trtsdtm",
-  call = derive_vars_merged(
+  description = "Derive treatment start datetime (TRTSDTM)",
+  new_call = derive_vars_merged(
     dataset_add = ex,
     by_vars = exprs(USUBJID),
     order = exprs(EXSDTM = convert_dtc_to_dtm(EXSTDTC)),
@@ -11,17 +12,18 @@ add_call(
 
 add_call(
   id = "trtdurd",
-  call = derive_var_trtdurd()
+  description = "Derive treatment duration (days) (TRTDURD)",
+  new_call = derive_var_trtdurd()
 )
 
 add_call_template(
   "inc_var",
+  description = "Increase VAR",
   mutate(VAR = VAR + !!step, glue_sym("{domain}STRESC") := glue_char("Found in {domain}")),
   defaults = list(step = 1, domain = "VS")
 )
 
-add_chunk("paths", {
-  "# Set up paths"
+add_chunk("paths", description = "Set up paths", {
   config <- yaml::read_yaml("config_workflow.yml")
 
   sdtm_path <- if_else(
@@ -33,6 +35,7 @@ add_chunk("paths", {
 
 add_chunk_template(
   "apply_metadata",
+  description = c("Apply metadata to ADaM dataset", "Please note that it is not exported yet.") ,
   {
   metacore <- admiralroche::read_dap_m3(dataset = glue_char("{str_to_upper(dataset)}"))
   ""

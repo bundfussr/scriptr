@@ -4,12 +4,21 @@
 \alias{add_chunk_template}
 \title{Adds a Chunk Template}
 \usage{
-add_chunk_template(id, chunk, defaults = NULL, env = rlang::caller_env())
+add_chunk_template(
+  id,
+  chunk,
+  description = NULL,
+  defaults = NULL,
+  env = rlang::caller_env()
+)
 }
 \arguments{
 \item{id}{Identifier}
 
 \item{chunk}{Chunk}
+
+\item{description}{Description
+The description is added as comment before the chunk.}
 
 \item{defaults}{List of default values}
 

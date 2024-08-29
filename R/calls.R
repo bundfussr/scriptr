@@ -1,14 +1,16 @@
 #' Adds a Call
 #'
 #' @param id Identifier
-#' @param call Call
+#' @param new_call Call
+#' @param description Description
+#'   The description is added as comment before the call.
 #' @param env Environment where to store the call
 #'
 #' @export
 #'
-add_call <- function(id, call, env = rlang::caller_env()) {
+add_call <- function(id, new_call, description = NULL, env = rlang::caller_env()) {
   init_scriptr_env(env)
-  env$scriptr_env$calls[[id]] <- enexpr(call)
+  env$scriptr_env$calls[[id]] <- call(enexpr(new_call), description = description)
 }
 
 call <- function(call, description) {
@@ -27,6 +29,8 @@ call <- function(call, description) {
 #'
 #' @param id Identifier
 #' @param call Call
+#' @param description Description
+#'   The description is added as comment before the call.
 #' @param defaults List of default values
 #' @param env Environment where to store the call template
 #'
@@ -98,17 +102,22 @@ get_call_code <- function(id, args = NULL) {
   id_char <- as_name(id)
   call <- get_call(id_char)
   if (inherits(call, "call")) {
-    paste(expr_deparse(call), collapse = " ")
+    code <- paste(expr_deparse(call$call), collapse = " ")
   }
   else if (inherits(call, "call_template")) {
     expr <- use_template(
       quo_get_expr(call$call),
       values = consolidate_lists(call$defaults, args)
     )
-    paste(expr_deparse(expr), collapse = " ")
+    code <- paste(expr_deparse(expr), collapse = " ")
   }
   else {
     cli_abort("{.val {id_char}} has unsupported class {.val {class(call)}}")
+  }
+  if (!is.null(call$description)) {
+    paste(paste("\n#", call$description), code, sep = "\n")
+  } else {
+    code
   }
 }
 
