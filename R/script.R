@@ -4,8 +4,9 @@
 #' @param file File to write the script to
 #'
 #' @export
-execute <- function(code, file) {
+execute <- function(code, filename) {
   code <- enexpr(code)
+  file <- file(filename, "w")
   on.exit(close(file))
 
   # print(code)

@@ -71,8 +71,16 @@ call_template <- function(call, description = NULL, defaults) {
 #'   A list of call ids is expected.
 #'
 #' @export
-insert_calls <- function(input, ids) {
+insert_calls <- function(input, ids, output = NULL) {
+  output <- enexpr(output)
+  if (is.null(output)) {
+    output_name <- expr_deparse(enexpr(input))
+  } else {
+    output_name <- expr_deparse(output)
+  }
   paste(
+    output_name,
+    "<-",
     expr_deparse(enexpr(input)),
     "%>%",
     paste(

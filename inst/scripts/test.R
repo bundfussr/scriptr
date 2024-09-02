@@ -54,6 +54,26 @@ add_chunk_template(
   }
 )
 
+add_chunk_template(
+  "adsl_derv_vars",
+  {
+    "Derivations ----"
+    # uses a combination of {admiral}, {admiralroche} and {tidyverse}
+
+    # get list of ADSL vars to join that are required for derivations
+    # all ADSL variables are added at the end to avoid carrying lots of variables
+    # user needs to update if any other study specific ADSL variables needed for
+    # derivations
+
+    adsl_derv_vars <- !!adsl_vars
+  },
+  defaults = list(adsl_vars = expr(exprs(TRTSDTM)))
+)
+
+execute({
+  insert_chunks(exprs(adsl_derv_vars))
+}, file = file("./test_out.R", "w"))
+
 set_scriptr_sources("scriptr")
 
 execute({
@@ -65,7 +85,7 @@ execute({
   data(ex)
 
   "# Derive treatment start/end"
-  dm %>% derive_vars_merged(
+  adsl <- dm %>% derive_vars_merged(
     dataset_add = ex,
     by_vars = exprs(STUDYID, USUBJID),
     mode = "first",
@@ -77,7 +97,7 @@ execute({
     new_vars = exprs(TRTEDTM, convert_dtc_to_dtm(EXENDTC))
   )
 
-  insert_calls(dm, ids = exprs(trtsdtm, trtdurd, inc_var(step = 3), chg))
+  insert_calls(adsl, ids = exprs(trtsdtm, trtdurd, inc_var(step = 3), chg))
 
   insert_chunks(exprs(apply_metadata(dataset = "adae")))
-}, file = file("./test_out.R", "w"))
+}, file = "test_out.R")

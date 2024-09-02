@@ -105,7 +105,7 @@ get_chunk_code <- function(id, args = NULL) {
   else {
     cli_abort("{.val {id_char}} has unsupported class {.val {class(chunk)}}")
   }
-  code <- str_remove_all(code, "(^`?\\{`?\\n|\\n\\}$)")
+  code <- str_remove_all(code, "(^`?\\{`?\\n|\\n\\}$)") %>% paste0("\n")
   if (!is.null(chunk$description)) {
     paste(format_description(chunk$description), code, sep = "\n")
   } else {
