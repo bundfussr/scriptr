@@ -144,3 +144,10 @@ add_chunk_template(
     xportr_df_label(metacore)
   }
 )
+
+add_call_template(
+  "derive_aerepedt",
+  description = "Derive end date of AE reporting period (AEREPEDT)",
+  mutate(AEREPEDT = pmin(TRTEDT + !!time_window, DCUTDT)),
+  defaults = list(time_window = 21)
+)

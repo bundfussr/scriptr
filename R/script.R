@@ -19,7 +19,7 @@ execute <- function(code, filename) {
     # print(paste("Statement", i))
     # print(typeof(code[[i]]))
     # print(code[[i]])
-    if (typeof(code[[i]]) == "character" && str_starts(code[[i]], "#")) {
+    if (typeof(code[[i]]) == "character" && (str_starts(code[[i]], "#") || code[[i]] == "")) {
       write(code[[i]], file)
     } else if (str_starts(paste(expr_deparse(code[[i]]), collapse = " ")
                           , "insert_calls\\(")) {
