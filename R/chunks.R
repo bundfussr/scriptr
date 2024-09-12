@@ -116,7 +116,7 @@ get_chunk_code <- function(id, args = NULL) {
 #' @export
 chunk_deparse <- function(chunk) {
   code <- map_chr(as.vector(unclass(chunk)), function(x) {
-    if (typeof(x) == "character" && (str_starts(x, "#") || x == "")) {
+    if (typeof(x) == "character" && (str_starts(x, "\n?#") || x == "")) {
       x
     } else if (length(x) > 1) {
       paste(expr_deparse(x), collapse = " ")
@@ -126,7 +126,8 @@ chunk_deparse <- function(chunk) {
   })
   # handle comments at the end of a line
   map_chr(code, function(x) {
-    str_replace(x, "(?:%\\+% +)?\"(#.+)\"", "\\1")
+    str_replace(x, "(?:%\\+% +)?\"(#.+)\"", "\\1") %>%
+    str_replace("(?:%\\+% +)?\"\\\\n(#.+)\"", "\n\\1")
   })
 }
 
