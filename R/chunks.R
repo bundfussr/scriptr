@@ -115,7 +115,7 @@ get_chunk_code <- function(id, args = NULL) {
 
 #' @export
 chunk_deparse <- function(chunk) {
-  map_chr(as.vector(unclass(chunk)), function(x) {
+  code <- map_chr(as.vector(unclass(chunk)), function(x) {
     if (typeof(x) == "character" && (str_starts(x, "#") || x == "")) {
       x
     } else if (length(x) > 1) {
@@ -123,6 +123,10 @@ chunk_deparse <- function(chunk) {
     } else {
       expr_deparse(x)
     }
+  })
+  # handle comments at the end of a line
+  map_chr(code, function(x) {
+    str_replace(x, "\"(#.+)\"", "\\1")
   })
 }
 

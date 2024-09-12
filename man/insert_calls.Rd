@@ -4,7 +4,7 @@
 \alias{insert_calls}
 \title{Inserts Calls to a Script}
 \usage{
-insert_calls(input, ids)
+insert_calls(input, ids, output = NULL)
 }
 \arguments{
 \item{input}{Input object

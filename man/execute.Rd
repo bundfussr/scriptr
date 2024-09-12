@@ -4,7 +4,7 @@
 \alias{execute}
 \title{Generate a Script}
 \usage{
-execute(code, file)
+execute(code, filename)
 }
 \arguments{
 \item{code}{Code for creating the script}
