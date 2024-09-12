@@ -126,7 +126,7 @@ chunk_deparse <- function(chunk) {
   })
   # handle comments at the end of a line
   map_chr(code, function(x) {
-    str_replace(x, "\"(#.+)\"", "\\1")
+    str_replace(x, "(?:%\\+% +)?\"(#.+)\"", "\\1")
   })
 }
 
