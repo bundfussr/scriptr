@@ -123,7 +123,11 @@ get_call_code <- function(id, args = NULL) {
     cli_abort("{.val {id_char}} has unsupported class {.val {class(call)}}")
   }
   if (!is.null(call$description)) {
-    paste(paste("\n#", call$description), code, sep = "\n")
+    paste(
+      paste("\n#", call$description, sep = if_else(str_starts(text, "#"), "", " ")),
+      code,
+      sep = "\n"
+    )
   } else {
     code
   }
