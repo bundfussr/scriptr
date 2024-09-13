@@ -124,7 +124,10 @@ get_call_code <- function(id, args = NULL) {
   }
   if (!is.null(call$description)) {
     paste(
-      paste("\n#", call$description, sep = if_else(str_starts(text, "#"), "", " ")),
+      paste(
+        "\n#", call$description,
+        sep = if_else(str_starts(call$description, "#"), "", " ")
+      ),
       code,
       sep = "\n"
     )
