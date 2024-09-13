@@ -1,5 +1,5 @@
 #' @importFrom cli cli_abort
-#' @importFrom dplyr filter group_by mutate pull row_number
+#' @importFrom dplyr filter group_by if_else mutate pull row_number
 #' @importFrom glue glue
 #' @importFrom magrittr %>%
 #' @importFrom purrr discard map_chr
