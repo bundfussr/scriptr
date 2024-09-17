@@ -101,6 +101,7 @@ set_scriptr_sources <- function(packages) {
 style_code <- function(code) {
   code %>%
     style_text(style = set_line_break_after_arg_style) %>%
+    style_text(style = set_line_break_after_pipe_style) %>%
     style_text()
 }
 
@@ -126,6 +127,21 @@ set_line_break_after_arg_style <- function() {
   styler::create_style_guide(
     line_break = list(set_line_break_after_arg),
     style_guide_name = "styler::set_line_break_after_arg_style@https://github.com/r-lib/styler",
+    style_guide_version = read.dcf(here::here("DESCRIPTION"))[, "Version"]
+  )
+}
+
+set_line_break_after_pipe <- function(pd_flat) {
+  op <- pd_flat$token == "SPECIAL-PIPE"
+  pd_flat$lag_newlines[dplyr::lag(op)] <- 1L
+  pd_flat$newlines[op] <- 1L
+  pd_flat
+}
+
+set_line_break_after_pipe_style <- function() {
+  styler::create_style_guide(
+    line_break = list(set_line_break_after_pipe),
+    style_guide_name = "styler::set_line_break_after_pipe_style@https://github.com/r-lib/styler",
     style_guide_version = read.dcf(here::here("DESCRIPTION"))[, "Version"]
   )
 }
