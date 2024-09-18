@@ -4,6 +4,9 @@ template:
   bootstrap: 5
   params:
    bootswatch: flatly
+  assets:
+    css:
+      - pkgdown/extra.css
 search:
   exclude: ['news/index.html']
 repo:

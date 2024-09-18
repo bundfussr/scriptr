@@ -98,6 +98,7 @@ set_scriptr_sources <- function(packages) {
 }
 
 
+#' @export
 style_code <- function(code) {
   code %>%
     style_text(style = set_line_break_after_arg_style) %>%

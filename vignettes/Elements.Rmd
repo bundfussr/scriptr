@@ -1,0 +1,23 @@
+---
+title: "Example Elements"
+output:
+  rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Example Elements}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+library(scriptr)
+source("../inst/scripts/demo_scriptr_objects.R")
+```
+
+
+```{r, echo=FALSE}
+get_reactable(env = scriptr_env)
+```
